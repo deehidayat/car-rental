@@ -1,5 +1,6 @@
 <?php
 
+// use App\Http\Controllers\API\ClientController as APIClientController;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,3 +15,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('clients', 'API\ClientController');
