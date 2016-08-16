@@ -41,7 +41,7 @@ class BaseController extends Controller
         return $this->model->rules;
     }
 
-    protected function getUpdateRules() {
+    protected function getUpdateRules($id) {
         return $this->model->rules;
     }
 
@@ -53,7 +53,7 @@ class BaseController extends Controller
         try {
             $record = $this->model->findOrFail($id);
         } catch (Exception $e) {
-            return $this->response(['id' => $id, 'message' => 'Client not found'], 400);
+            return $this->response(['id' => $id, 'message' => 'Record not found'], 400);
         }
         return $this->response($record);
     }
@@ -71,9 +71,9 @@ class BaseController extends Controller
         try {
             $record = $this->model->findOrFail($id);
         } catch (Exception $e) {
-            return $this->response(['id' => $id, 'message' => 'Client not found'], 400);
+            return $this->response(['id' => $id, 'message' => 'Record not found'], 400);
         }
-        $validator = Validator::make($request->all(), $this->getUpdateRules());
+        $validator = Validator::make($request->all(), $this->getUpdateRules($id));
         if ($validator->fails()) {
             return $this->response($validator->messages(), 400);
         }
@@ -86,7 +86,7 @@ class BaseController extends Controller
         try {
             $record = $this->model->findOrFail($id);
         } catch (Exception $e) {
-            return $this->response(['id' => $id, 'message' => 'Client not found'], 400);
+            return $this->response(['id' => $id, 'message' => 'Record not found'], 400);
         }
         $record->delete();
         return $this->response(['id' => $record->id]);
