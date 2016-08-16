@@ -37,7 +37,11 @@ class BaseController extends Controller
         return Response::json($data, $code, [], JSON_NUMERIC_CHECK);
     }
 
-    protected function rules() {
+    protected function getCreateRules() {
+        return $this->model->rules;
+    }
+
+    protected function getUpdateRules() {
         return $this->model->rules;
     }
 
@@ -55,7 +59,7 @@ class BaseController extends Controller
     }
 
     public function store(Request $request){
-        $validator = Validator::make($request->all(), $this->rules());
+        $validator = Validator::make($request->all(), $this->getCreateRules());
         if ($validator->fails()) {
             return $this->response($validator->messages(), 400);
         }
@@ -69,7 +73,7 @@ class BaseController extends Controller
         } catch (Exception $e) {
             return $this->response(['id' => $id, 'message' => 'Client not found'], 400);
         }
-        $validator = Validator::make($request->all(), $this->rules());
+        $validator = Validator::make($request->all(), $this->getUpdateRules());
         if ($validator->fails()) {
             return $this->response($validator->messages(), 400);
         }
