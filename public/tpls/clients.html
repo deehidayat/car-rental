@@ -4,18 +4,18 @@
     </div>
     <div class="panel-body">
         <div class="col-md-12">
-            <form class="form-horizontal" ng-submit="onFormSubmit()">
+            <form class="form-horizontal" ng-submit="CRUD.submit()">
                 <div class="form-group">
                     <label for="name">
                         Name
                     </label>
-                    <input class="form-control" id="name" ng-model="data.name" placeholder="Name" type="text" xrequired=""/>
+                    <input class="form-control" id="name" ng-model="CRUD.data.name" placeholder="Name" type="text" xrequired=""/>
                 </div>
                 <div class="form-group">
                     <label for="gender">
                         Gender
                     </label>
-                    <select class="form-control" id="gender" ng-model="data.gender" placeholder="Gender" style="width: 100%" xrequired="">
+                    <select class="form-control" id="gender" ng-model="CRUD.data.gender" placeholder="Gender" style="width: 100%" xrequired="">
                         <option value="">
                             Gender
                         </option>
@@ -31,13 +31,13 @@
                     <button class="btn btn-success" type="submit">
                         Submit
                     </button>
-                    <button class="btn btn-default" ng-click="onResetClick()" type="reset">
+                    <button class="btn btn-default" ng-click="CRUD.reset()" type="reset">
                         Reset
                     </button>
                 </div>
                 <div class="form-group" xng-show="error">
-                    <div class="alert alert-warning alert-dismissible" ng-repeat="(key, value) in error" ng-show="value" role="alert">
-                        <button aria-label="Close" class="close" data-dismiss="alert" ng-click="error[key] = null" type="button">
+                    <div class="alert alert-warning alert-dismissible" ng-repeat="(key, value) in CRUD.error" ng-show="value" role="alert">
+                        <button aria-label="Close" class="close" data-dismiss="alert" ng-click="CRUD.error[key] = null" type="button">
                             <span aria-hidden="true">
                                 ×
                             </span>
@@ -68,7 +68,7 @@
             Action
         </th>
     </tr>
-    <tr ng-repeat="(key, value) in dataset">
+    <tr ng-repeat="(key, value) in CRUD.dataset">
         <td ng-bind="$index+1">
         </td>
         <td ng-bind="value.name">
@@ -76,11 +76,11 @@
         <td ng-bind="value.gender">
         </td>
         <td style="text-align: center">
-            <button class="btn btn-flat btn-info" ng-click="onEditClick(value)">
+            <button class="btn btn-flat btn-info" ng-click="CRUD.select(value)">
                 <i class="glyphicon glyphicon-edit">
                 </i>
             </button>
-            <button class="btn btn-flat btn-danger" ng-click="onDeleteClick(value)">
+            <button class="btn btn-flat btn-danger" ng-click="CRUD.delete(value)">
                 <i class="glyphicon glyphicon-trash">
                 </i>
             </button>

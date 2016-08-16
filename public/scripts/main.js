@@ -10,98 +10,70 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
         controller: 'CarsController'
     });
 }).run([function() {}])
-.controller('ClientsController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
-    $scope.data = null;
-    $scope.error = null;
-    $scope.dataset = [];
-
-    function getData() {
-        $http.get('clients').then(function(response) {
-            $scope.dataset = response.data;
+.service('CRUDService', ['$http', function($http){
+    function CRUDService() {
+        this.baseUrl = '';
+        this.dataset = [];
+        this.data = null;
+        this.error = null;
+    }
+    CRUDService.prototype.setBaseUrl = function(url) {
+        this.baseUrl = url;
+    };
+    CRUDService.prototype.getIndexes = function() {
+        var self = this;
+        $http.get(self.baseUrl).then(function(response) {
+            self.dataset = response.data;
+        }, function(response) {
+            self.error = response.data;
         });
-    }
-    getData();
-
-    function setError(error) {
-        $scope.error = error;
-    }
-    $scope.onFormSubmit = function() {
-        if ($scope.data && $scope.data.id) {
-            $http.put('clients/' + $scope.data.id, $scope.data).then(function() {
-                getData();
-                $scope.data = null;
+    };
+    CRUDService.prototype.setError = function(error) {
+        this.error = error;
+    };
+    CRUDService.prototype.submit = function() {
+        var self = this;
+        if (self.data && self.data.id) {
+            $http.put(self.baseUrl + '/' + self.data.id, self.data).then(function() {
+                self.getIndexes();
+                self.reset();
             }, function(response) {
-                setError(response.data);
+                self.setError(response.data);
             });
         } else {
-            $http.post('clients', $scope.data).then(function() {
-                getData();
-                $scope.data = null;
+            $http.post(self.baseUrl, self.data).then(function() {
+                self.getIndexes();
+                self.reset();
             }, function(response) {
-                setError(response.data);
+                self.setError(response.data);
             });
         }
     };
-    $scope.onResetClick = function() {
-        $scope.data = null;
-        $scope.error = null;
+    CRUDService.prototype.reset = function() {
+        this.data = null;
+        this.error = null;
     }
-    $scope.onEditClick = function(data) {
-        $scope.data = angular.copy(data);
-        $scope.error = null;
+    CRUDService.prototype.select = function(record) {
+        this.data = angular.copy(record);
+        this.error = null;
     }
-    $scope.onDeleteClick = function(data) {
-        $http.delete('clients/' + data.id).then(function() {
-            getData();
+    CRUDService.prototype.delete = function(record) {
+        var self = this;
+        $http.delete(self.baseUrl + '/' + record.id).then(function() {
+            self.getIndexes()
         }, function(response) {
-            setError(response.data);
+            self.setError(response.data);
         });
     }
-}]).controller('CarsController', ['$scope', '$http', function($scope, $http) {
-    $scope.data = null;
-    $scope.error = null;
-    $scope.dataset = [];
-
-    function getData() {
-        $http.get('cars').then(function(response) {
-            $scope.dataset = response.data;
-        });
-    }
-    getData();
-
-    function setError(error) {
-        $scope.error = error;
-    }
-    $scope.onFormSubmit = function() {
-        if ($scope.data && $scope.data.id) {
-            $http.put('cars/' + $scope.data.id, $scope.data).then(function() {
-                getData();
-                $scope.data = null;
-            }, function(response) {
-                setError(response.data);
-            });
-        } else {
-            $http.post('cars', $scope.data).then(function() {
-                getData();
-                $scope.data = null;
-            }, function(response) {
-                setError(response.data);
-            });
-        }
-    };
-    $scope.onResetClick = function() {
-        $scope.data = null;
-        $scope.error = null;
-    }
-    $scope.onEditClick = function(data) {
-        $scope.data = angular.copy(data);
-        $scope.error = null;
-    }
-    $scope.onDeleteClick = function(data) {
-        $http.delete('cars/' + data.id).then(function() {
-            getData();
-        }, function(response) {
-            setError(response.data);
-        });
-    }
+    
+    return new CRUDService;
+}])
+.controller('ClientsController', ['$scope', '$http', 'CRUDService', function($scope, $http, CRUDService) {
+    $scope.CRUD = CRUDService;
+    $scope.CRUD.setBaseUrl('clients');
+    $scope.CRUD.getIndexes();
+}]).controller('CarsController', ['$scope', '$http', 'CRUDService', function($scope, $http, CRUDService) {
+    $scope.CRUD = CRUDService;
+    $scope.CRUD.setBaseUrl('cars');
+    $scope.CRUD.getIndexes();
 }]);
