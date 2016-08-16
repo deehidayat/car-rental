@@ -21,3 +21,4 @@ Route::resource('cars', 'API\CarController');
 Route::resource('rentals', 'API\RentalController');
 
 Route::get('histories/client/{id}', 'API\ClientController@histories');
+Route::get('histories/car/{id}', 'API\CarController@histories');
