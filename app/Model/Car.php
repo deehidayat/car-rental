@@ -12,10 +12,12 @@ class Car extends Model
         'brand', 'type', 'year', 'color', 'plate'
     ];
 
+    protected $hidden = ['id'];
+
     public $rules = [
         'brand' => 'required',
         'type' => 'required',
-        'year' => "required|digits:4",
+        'year' => 'required|integer|digits:4',
         'color' => 'required',
         'plate' => 'required|unique:cars',
     ];

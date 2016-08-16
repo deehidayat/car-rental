@@ -16,7 +16,7 @@ class CreateCarsTable extends Migration
             $table->increments('id');
             $table->string('brand');
             $table->string('type');
-            $table->tinyInteger('year')->unsigned();
+            $table->smallInteger('year')->unsigned();
             $table->string('color');
             $table->string('plate')->unique()->index();
         });
