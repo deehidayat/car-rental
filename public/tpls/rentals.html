@@ -1,0 +1,117 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Clients CRUD
+    </div>
+    <div class="panel-body">
+        <div class="col-md-12">
+            <form class="form-horizontal" ng-submit="CRUD.submit()">
+                <div class="form-group">
+                    <label for="name">
+                        Name
+                    </label>
+                    <select class="form-control" id="name" ng-model="CRUD.data.client_id" placeholder="Name" style="width: 100%" ng-options="value.id as value.name for value in clients.dataset">
+                      <option value="">Choose Client</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="car">
+                        Cars
+                    </label>
+                    <select class="form-control" id="car" ng-model="CRUD.data.car_id" placeholder="Car" style="width: 100%" >
+                        <option value="">
+                            Choose Car
+                        </option>
+                        <option ng-repeat="(key, value) in cars.dataset" ng-bind="value.brand + ' ' + value.type + ' ' + value.color + ' ' + value.plate " ng-value="value.id"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date_from">
+                        Date
+                    </label>
+                    <div>
+                        <div style="display:inline-block; min-height:290px;">
+                          <div uib-datepicker ng-model="date_from" class="well well-sm" datepicker-options="dateFromOptions"></div>
+                        </div>
+                        <div style="display:inline-block; min-height:290px;">
+                          <div uib-datepicker ng-model="date_to" class="well well-sm" datepicker-options="dateToOptions"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success" type="submit">
+                        Submit
+                    </button>
+                    <button class="btn btn-default" ng-click="CRUD.reset()" type="reset">
+                        Reset
+                    </button>
+                </div>
+                <div class="form-group" xng-show="error">
+                    <div class="alert alert-warning alert-dismissible" ng-repeat="(key, value) in CRUD.error" ng-show="value" role="alert">
+                        <button aria-label="Close" class="close" data-dismiss="alert" ng-click="CRUD.error[key] = null" type="button">
+                            <span aria-hidden="true">
+                                ×
+                            </span>
+                        </button>
+                        <strong>
+                            <span ng-bind="value">
+                            </span>
+                        </strong>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Tabel -->
+<table class="table">
+    <tr>
+        <th style="width: 20px;">
+            No
+        </th>
+        <th style="width: 20%">
+            Name
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Plate
+        </th>
+        <th>
+            Date
+        </th>
+        <th style="text-align: center; width:150px; ">
+            Action
+        </th>
+    </tr>
+    <tr ng-repeat="(key, value) in CRUD.dataset">
+        <td ng-bind="$index+1">
+        </td>
+        <td ng-bind="value.name">
+        </td>
+        <td ng-bind="value.brand">
+        </td>
+        <td ng-bind="value.type">
+        </td>
+        <td ng-bind="value.plate">
+        </td>
+        <td>
+          <span ng-bind="(value.date_from | date:'mediumDate')"></span>
+           to 
+          <span ng-bind="(value.date_to | date:'mediumDate')"></span>
+        </td>
+        <td style="text-align: center">
+            <button class="btn btn-flat btn-info" ng-click="CRUD.select(value)">
+                <i class="glyphicon glyphicon-edit">
+                </i>
+            </button>
+            <button class="btn btn-flat btn-danger" ng-click="CRUD.delete(value)">
+                <i class="glyphicon glyphicon-trash">
+                </i>
+            </button>
+        </td>
+    </tr>
+</table>

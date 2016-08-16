@@ -8,13 +8,17 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
         url: '/cars',
         templateUrl: 'tpls/cars.html',
         controller: 'CarsController'
+    }).state('rentals', {
+        url: '/rentals',
+        templateUrl: 'tpls/rentals.html',
+        controller: 'RentalsController'
     });
 }).run([function() {}])
 .service('CRUDService', ['$http', function($http){
     function CRUDService() {
         this.baseUrl = '';
         this.dataset = [];
-        this.data = null;
+        this.data = {};
         this.error = null;
     }
     CRUDService.prototype.setBaseUrl = function(url) {
@@ -50,7 +54,7 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
         }
     };
     CRUDService.prototype.reset = function() {
-        this.data = null;
+        this.data = {};
         this.error = null;
     }
     CRUDService.prototype.select = function(record) {
@@ -66,14 +70,47 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
         });
     }
     
-    return new CRUDService;
+    return CRUDService;
 }])
 .controller('ClientsController', ['$scope', '$http', 'CRUDService', function($scope, $http, CRUDService) {
-    $scope.CRUD = CRUDService;
+    $scope.CRUD = new CRUDService;
     $scope.CRUD.setBaseUrl('clients');
     $scope.CRUD.getIndexes();
 }]).controller('CarsController', ['$scope', '$http', 'CRUDService', function($scope, $http, CRUDService) {
-    $scope.CRUD = CRUDService;
+    $scope.CRUD = new CRUDService;
     $scope.CRUD.setBaseUrl('cars');
     $scope.CRUD.getIndexes();
+}]).controller('RentalsController', ['$scope', '$http', 'CRUDService', '$filter', function($scope, $http, CRUDService, $filter) {
+    $scope.CRUD = new CRUDService;
+    $scope.CRUD.setBaseUrl('rentals');
+    $scope.CRUD.getIndexes();
+    $scope.date_from = new Date();
+    $scope.date_to = new Date();
+    $scope.dateFromOptions = {
+        minDate: new Date()
+    };
+    $scope.dateToOptions = {
+        minDate: new Date()
+    };
+    $scope.CRUD.reset = function() {
+        $scope.CRUD.data = {};
+        $scope.CRUD.error = null;
+        $scope.date_from = new Date();
+        $scope.date_to = new Date();
+    }
+    $scope.$watch('date_from', function(val){
+        $scope.CRUD.data.date_from = val ? $filter('date')(val, 'yyyy-MM-dd') : null;
+        $scope.dateToOptions.minDate = val;
+    });
+    $scope.$watch('date_to', function(val){
+        $scope.CRUD.data.date_to = val ? $filter('date')(val, 'yyyy-MM-dd') : null;
+    });
+    // Clients
+    $scope.clients = new CRUDService;
+    $scope.clients.setBaseUrl('clients');
+    $scope.clients.getIndexes();
+    // Cars
+    $scope.cars = new CRUDService;
+    $scope.cars.setBaseUrl('cars');
+    $scope.cars.getIndexes();
 }]);

@@ -35,7 +35,10 @@ class RentalController extends APIBaseController
             })
             ->get();
         if ($records->count() > 0) {
-            return $this->response(['Client' => ['Client have a booking'], 'Rental' => $records], 400);
+            return $this->response([
+                'Client' => ['Client have a booking'], 
+                // 'Rental' => $records
+            ], 400);
         }
         /**
          * Validasi Car
@@ -49,7 +52,10 @@ class RentalController extends APIBaseController
             })
             ->get();
         if ($records->count() > 0) {
-            return $this->response(['Car' => ['Selected car has been booked'], 'Rental' => $records], 400);
+            return $this->response([
+                'Car' => ['Selected car has been booked'], 
+                // 'Rental' => $records
+            ], 400);
         }
         /**
          * Send data
@@ -82,7 +88,10 @@ class RentalController extends APIBaseController
             })
             ->get();
         if ($records->count() > 0) {
-            return $this->response(['Client' => ['Client have a booking'], 'Rental' => $records], 400);
+            return $this->response([
+                'Client' => ['Client have a booking'], 
+                // 'Rental' => $records
+            ], 400);
         }
         /**
          * Validasi Car
@@ -97,7 +106,10 @@ class RentalController extends APIBaseController
             })
             ->get();
         if ($records->count() > 0) {
-            return $this->response(['Car' => ['Selected car has been booked'], 'Rental' => $records], 400);
+            return $this->response([
+                'Car' => ['Selected car has been booked'], 
+                // 'Rental' => $records
+            ], 400);
         }
         /**
          * Send data

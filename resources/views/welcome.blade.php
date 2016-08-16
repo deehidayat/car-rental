@@ -27,6 +27,7 @@
               <ul class="nav navbar-nav">
                 <li ui-sref-active="active"><a href="#" ui-sref="clients">Clients <span class="sr-only">(current)</span></a></li>
                 <li ui-sref-active="active"><a href="#" ui-sref="cars">Cars</a></li>
+                <li ui-sref-active="active"><a href="#" ui-sref="rentals">Rentals</a></li>
                 <!-- <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                   <ul class="dropdown-menu">
