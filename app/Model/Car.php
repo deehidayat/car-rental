@@ -12,7 +12,7 @@ class Car extends Model
         'brand', 'type', 'year', 'color', 'plate'
     ];
 
-    protected $hidden = ['id'];
+    protected $hidden = [];
 
     public $rules = [
         'brand' => 'required',

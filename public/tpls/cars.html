@@ -1,0 +1,109 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Cars CRUD
+    </div>
+    <div class="panel-body">
+        <div class="col-md-12">
+            <form class="form-horizontal" ng-submit="onFormSubmit()">
+                <div class="form-group">
+                    <label for="brand">
+                        Brand
+                    </label>
+                    <input class="form-control" id="brand" ng-model="data.brand" placeholder="Brand" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="type">
+                        Type
+                    </label>
+                    <input class="form-control" id="type" ng-model="data.type" placeholder="Type" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="year">
+                        Year
+                    </label>
+                    <input class="form-control" id="year" ng-model="data.year" placeholder="Year" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="color">
+                        Color
+                    </label>
+                    <input class="form-control" id="color" ng-model="data.color" placeholder="Color" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="plate">
+                        Plate
+                    </label>
+                    <input class="form-control" id="plate" ng-model="data.plate" placeholder="Plate" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success" type="submit">
+                        Submit
+                    </button>
+                    <button class="btn btn-default" ng-click="onResetClick()" type="reset">
+                        Reset
+                    </button>
+                </div>
+                <div class="form-group" xng-show="error">
+                    <div class="alert alert-warning alert-dismissible" ng-repeat="(key, value) in error" ng-show="value" role="alert">
+                        <button aria-label="Close" class="close" data-dismiss="alert" ng-click="error[key] = null" type="button">
+                            <span aria-hidden="true">
+                                ×
+                            </span>
+                        </button>
+                        <strong>
+                            <span ng-bind="value">
+                            </span>
+                        </strong>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Tabel -->
+<table class="table">
+    <tr>
+        <th style="width: 20px;">
+            No
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Year
+        </th>
+        <th>
+            Color
+        </th>
+        <th>
+            Plate
+        </th>
+        <th style="text-align: center; width:150px; ">
+            Action
+        </th>
+    </tr>
+    <tr ng-repeat="(key, value) in dataset">
+        <td ng-bind="$index+1">
+        </td>
+        <td ng-bind="value.brand">
+        </td>
+        <td ng-bind="value.type">
+        <td ng-bind="value.year">
+        <td ng-bind="value.color">
+        <td ng-bind="value.plate">
+        </td>
+        <td style="text-align: center">
+            <button class="btn btn-flat btn-info" ng-click="onEditClick(value)">
+                <i class="glyphicon glyphicon-edit">
+                </i>
+            </button>
+            <button class="btn btn-flat btn-danger" ng-click="onDeleteClick(value)">
+                <i class="glyphicon glyphicon-trash">
+                </i>
+            </button>
+        </td>
+    </tr>
+</table>
