@@ -16,6 +16,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('cars/free', 'API\CarController@free');
+Route::get('cars/rented', 'API\CarController@rented');
+
 Route::resource('clients', 'API\ClientController');
 Route::resource('cars', 'API\CarController');
 Route::resource('rentals', 'API\RentalController');
+
+Route::get('histories/client/{id}', 'API\ClientController@histories');
+Route::get('histories/car/{id}', 'API\CarController@histories');

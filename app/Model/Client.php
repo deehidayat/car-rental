@@ -18,4 +18,8 @@ class Client extends Model
     ];
 
     public $timestamps = false;
+
+    public function rentals() {
+        return $this->hasMany('App\Model\Rental', 'client_id', 'id');
+    }
 }
