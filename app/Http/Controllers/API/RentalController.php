@@ -28,10 +28,19 @@ class RentalController extends APIBaseController
          */
         $records = $this->model
             ->where('client_id', '=', $input['client_id'])
+            // Validasi range tanggal
             ->where(function($query) use ($input) {
                 $query
-                ->whereBetween('date_from', [$input['date_from'], $input['date_to']])
-                ->orWhereBetween('date_to', [$input['date_from'], $input['date_to']]);
+                ->where(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '<=', $input['date_from'])
+                    ->where('date_to', '>=', $input['date_from']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '<=', $input['date_to'])
+                    ->where('date_to', '>=', $input['date_to']);
+                });
             })
             ->get();
         if ($records->count() > 0) {
@@ -45,10 +54,19 @@ class RentalController extends APIBaseController
          */
         $records = $this->model
             ->where('car_id', '=', $input['car_id'])
+            // Validasi range tanggal
             ->where(function($query) use ($input) {
                 $query
-                ->whereBetween('date_from', [$input['date_from'], $input['date_to']])
-                ->orWhereBetween('date_to', [$input['date_from'], $input['date_to']]);
+                ->where(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '<=', $input['date_from'])
+                    ->where('date_to', '>=', $input['date_from']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '<=', $input['date_to'])
+                    ->where('date_to', '>=', $input['date_to']);
+                });
             })
             ->get();
         if ($records->count() > 0) {
