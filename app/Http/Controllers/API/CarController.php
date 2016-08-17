@@ -57,4 +57,32 @@ class CarController extends APIBaseController
         }
         return $this->response($result);
     }
+
+    public function free() {
+        $input = Request::all();
+        $date = isset($input['date']) ? strtotime($input['date']) : null;
+        if (!isset($date)) {
+            return $this->response(['message' => 'Date required'], 400);
+        }
+        /**
+         * Validasi tanggal hari ini
+         */
+        $now = strtotime(date('Y-m-d', time()));
+        if (date('U', $date) < date('U', $now)) {
+            return $this->response(['message' => 'Date must be greater than or equal to ' . date('d-m-Y', $now)], 400);
+        }
+        $bookedCars = Car::select('cars.id', 'cars.brand', 'cars.type', 'cars.plate', 'rentals.date_from', 'rentals.date_to')
+                    ->join('rentals', 'cars.id', '=', 'rentals.car_id')
+                    ->where('date_from', '<=', date('Y-m-d', $date))
+                    ->where('date_to', '>=', date('Y-m-d', $date))
+                    ->groupBy('car_id')
+                    ->get()->pluck('id');
+        $freeCars = Car::select('id', 'brand', 'type', 'plate')
+                    ->whereNotIn('id', $bookedCars)
+                    ->get();
+        return $this->response([
+            'date' => date('d-m-Y', $date),
+            'free_cars' => $freeCars
+        ]);
+    }
 }
