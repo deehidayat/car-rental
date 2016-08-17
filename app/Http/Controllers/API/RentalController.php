@@ -33,8 +33,8 @@ class RentalController extends APIBaseController
                 $query
                 ->where(function($query2) use ($input) {
                     $query2
-                    ->where('date_from', '<=', $input['date_from'])
-                    ->where('date_to', '>=', $input['date_from']);
+                    ->where('date_from', '>=', $input['date_from'])
+                    ->where('date_from', '<=', $input['date_to']);
                 })
                 ->orWhere(function($query2) use ($input) {
                     $query2
@@ -45,8 +45,11 @@ class RentalController extends APIBaseController
             ->get();
         if ($records->count() > 0) {
             return $this->response([
-                'Client' => ['Client have a booking'], 
-                // 'Rental' => $records
+                'Client' => [sprintf('Client have a booking at %s to %s for car %s', 
+                    $records[0]->date_from->format('d-m-Y'), 
+                    $records[0]->date_to->format('d-m-Y'), 
+                    $records[0]->car->plate
+                )]
             ], 400);
         }
         /**
@@ -59,8 +62,8 @@ class RentalController extends APIBaseController
                 $query
                 ->where(function($query2) use ($input) {
                     $query2
-                    ->where('date_from', '<=', $input['date_from'])
-                    ->where('date_to', '>=', $input['date_from']);
+                    ->where('date_from', '>=', $input['date_from'])
+                    ->where('date_from', '<=', $input['date_to']);
                 })
                 ->orWhere(function($query2) use ($input) {
                     $query2
@@ -71,8 +74,11 @@ class RentalController extends APIBaseController
             ->get();
         if ($records->count() > 0) {
             return $this->response([
-                'Car' => ['Selected car has been booked'], 
-                // 'Rental' => $records
+                'Car' => [sprintf('Car has been booked at %s to %s by %s', 
+                    $records[0]->date_from->format('d-m-Y'),
+                    $records[0]->date_to->format('d-m-Y'),
+                    $records[0]->client->name
+                )]
             ], 400);
         }
         /**
@@ -99,10 +105,19 @@ class RentalController extends APIBaseController
         $records = $this->model
             ->where('client_id', '=', $input['client_id'])
             ->where('id', '!=', $id)
+            // Validasi range tanggal
             ->where(function($query) use ($input) {
                 $query
-                ->whereBetween('date_from', [$input['date_from'], $input['date_to']])
-                ->orWhereBetween('date_to', [$input['date_from'], $input['date_to']]);
+                ->where(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '>=', $input['date_from'])
+                    ->where('date_from', '<=', $input['date_to']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '<=', $input['date_to'])
+                    ->where('date_to', '>=', $input['date_to']);
+                });
             })
             ->get();
         if ($records->count() > 0) {
@@ -117,10 +132,19 @@ class RentalController extends APIBaseController
         $records = $this->model
             ->where('car_id', '=', $input['car_id'])
             ->where('id', '!=', $id)
+            // Validasi range tanggal
             ->where(function($query) use ($input) {
                 $query
-                ->whereBetween('date_from', [$input['date_from'], $input['date_to']])
-                ->orWhereBetween('date_to', [$input['date_from'], $input['date_to']]);
+                ->where(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '>=', $input['date_from'])
+                    ->where('date_from', '<=', $input['date_to']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    $query2
+                    ->where('date_from', '<=', $input['date_to'])
+                    ->where('date_to', '>=', $input['date_to']);
+                });
             })
             ->get();
         if ($records->count() > 0) {
