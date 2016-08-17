@@ -23,6 +23,13 @@ class RentalController extends APIBaseController
         if ($validator->fails()) {
             return $this->response($validator->messages(), 400);
         }
+        $a = date_diff(new \DateTime($input['date_from']), new \DateTime($input['date_to']));
+        // Validasi 3 Hari
+        if (2 < $a->d) {
+            return $this->response([
+                'Date' => ['Maximum rent is 3 days']
+            ], 400);
+        };
         /**
          * Validasi Client
          */
