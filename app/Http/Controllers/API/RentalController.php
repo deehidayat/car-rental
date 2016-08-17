@@ -24,6 +24,12 @@ class RentalController extends APIBaseController
             return $this->response($validator->messages(), 400);
         }
         $a = date_diff(new \DateTime($input['date_from']), new \DateTime($input['date_to']));
+        // Validasi tanggal terbalik
+        if ($a->invert) {
+            return $this->response([
+                'Date' => ['Please select valid date range']
+            ], 400);
+        };
         // Validasi 3 Hari
         if (2 < $a->d) {
             return $this->response([
@@ -124,6 +130,19 @@ class RentalController extends APIBaseController
         if ($validator->fails()) {
             return $this->response($validator->messages(), 400);
         }
+        $a = date_diff(new \DateTime($input['date_from']), new \DateTime($input['date_to']));
+        // Validasi tanggal terbalik
+        if ($a->invert) {
+            return $this->response([
+                'Date' => ['Please select valid date range']
+            ], 400);
+        };
+        // Validasi 3 Hari
+        if (2 < $a->d) {
+            return $this->response([
+                'Date' => ['Maximum rent is 3 days']
+            ], 400);
+        };
         /**
          * Validasi Client
          */
@@ -134,21 +153,33 @@ class RentalController extends APIBaseController
             ->where(function($query) use ($input) {
                 $query
                 ->where(function($query2) use ($input) {
+                    // Case 1 : Tanggal Mulai Diantara tanggal yg lain
+                    $query2
+                    ->where('date_from', '<=', $input['date_from'])
+                    ->where('date_to', '>=', $input['date_from']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    // Case 2 : Tanggal Akhir Diantara tanggal yg lain
+                    $query2
+                    ->where('date_from', '<=', $input['date_to'])
+                    ->where('date_to', '>=', $input['date_to']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    // Case 2 : Tanggal Rent sebelumnya sama, kemudian Rent baru melewati tanggal trsbt
                     $query2
                     ->where('date_from', '>=', $input['date_from'])
                     ->where('date_from', '<=', $input['date_to']);
                 })
-                ->orWhere(function($query2) use ($input) {
-                    $query2
-                    ->where('date_from', '<=', $input['date_to'])
-                    ->where('date_to', '>=', $input['date_to']);
-                });
+                ;
             })
             ->get();
         if ($records->count() > 0) {
             return $this->response([
-                'Client' => ['Client have a booking'], 
-                // 'Rental' => $records
+                'Client' => [sprintf('Client have a rent at %s to %s for car %s', 
+                    $records[0]->date_from->format('d-m-Y'), 
+                    $records[0]->date_to->format('d-m-Y'), 
+                    $records[0]->car->plate
+                )]
             ], 400);
         }
         /**
@@ -161,21 +192,33 @@ class RentalController extends APIBaseController
             ->where(function($query) use ($input) {
                 $query
                 ->where(function($query2) use ($input) {
+                    // Case 1 : Tanggal Mulai Diantara tanggal yg lain
+                    $query2
+                    ->where('date_from', '<=', $input['date_from'])
+                    ->where('date_to', '>=', $input['date_from']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    // Case 2 : Tanggal Akhir Diantara tanggal yg lain
+                    $query2
+                    ->where('date_from', '<=', $input['date_to'])
+                    ->where('date_to', '>=', $input['date_to']);
+                })
+                ->orWhere(function($query2) use ($input) {
+                    // Case 2 : Tanggal Rent sebelumnya sama, kemudian Rent baru melewati tanggal trsbt
                     $query2
                     ->where('date_from', '>=', $input['date_from'])
                     ->where('date_from', '<=', $input['date_to']);
                 })
-                ->orWhere(function($query2) use ($input) {
-                    $query2
-                    ->where('date_from', '<=', $input['date_to'])
-                    ->where('date_to', '>=', $input['date_to']);
-                });
+                ;
             })
             ->get();
         if ($records->count() > 0) {
             return $this->response([
-                'Car' => ['Selected car has been booked'], 
-                // 'Rental' => $records
+                'Car' => [sprintf('Car has been rented at %s to %s by %s', 
+                    $records[0]->date_from->format('d-m-Y'),
+                    $records[0]->date_to->format('d-m-Y'),
+                    $records[0]->client->name
+                )]
             ], 400);
         }
         /**
