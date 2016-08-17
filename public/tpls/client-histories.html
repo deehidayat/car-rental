@@ -1,0 +1,35 @@
+<!-- Tabel -->
+<table class="table">
+    <tr>
+        <th style="width: 20px;">
+            No
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Plate
+        </th>
+        <th>
+            Date
+        </th>
+    </tr>
+    <tr ng-repeat="(key, value) in data.histories">
+        <td ng-bind="$index+1">
+        </td>
+        <td ng-bind="value.brand">
+        </td>
+        <td ng-bind="value.type">
+        </td>
+        <td ng-bind="value.plate">
+        </td>
+        <td>
+          <span ng-bind="(value.date_from | date:'mediumDate')"></span>
+           to 
+          <span ng-bind="(value.date_to | date:'mediumDate')"></span>
+        </td>
+    </tr>
+</table>

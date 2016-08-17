@@ -8,6 +8,7 @@ class Rental extends Model
 {
     public $table = 'rentals';
 
+    protected $dateFormat = 'Y-m-d';
     protected $dates = ['date_from', 'date_to'];
 
     protected $fillable = [
@@ -23,7 +24,7 @@ class Rental extends Model
 
     public $timestamps = false;
 
-    protected $hidden = ['client_id', 'car_id'];
+    // protected $hidden = ['client_id', 'car_id'];
 
     // protected $with = ['client', 'car'];
 

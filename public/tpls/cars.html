@@ -1,0 +1,110 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Cars CRUD
+    </div>
+    <div class="panel-body">
+        <div class="col-md-12">
+            <form class="form-horizontal" ng-submit="CRUD.submit()">
+                <div class="form-group">
+                    <label for="brand">
+                        Brand
+                    </label>
+                    <input class="form-control" id="brand" ng-model="CRUD.data.brand" placeholder="Brand" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="type">
+                        Type
+                    </label>
+                    <input class="form-control" id="type" ng-model="CRUD.data.type" placeholder="Type" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="year">
+                        Year
+                    </label>
+                    <input class="form-control" id="year" ng-model="CRUD.data.year" placeholder="Year" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="color">
+                        Color
+                    </label>
+                    <input class="form-control" id="color" ng-model="CRUD.data.color" placeholder="Color" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <label for="plate">
+                        Plate
+                    </label>
+                    <input class="form-control" id="plate" ng-model="CRUD.data.plate" placeholder="Plate" type="text" xrequired=""/>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success" type="submit">
+                        Submit
+                    </button>
+                    <button class="btn btn-default" ng-click="CRUD.reset()" type="reset">
+                        Reset
+                    </button>
+                </div>
+                <div class="form-group" xng-show="error">
+                    <div class="alert alert-warning alert-dismissible" ng-repeat="(key, value) in CRUD.error" ng-show="value" role="alert">
+                        <button aria-label="Close" class="close" data-dismiss="alert" ng-click="CRUD.error[key] = null" type="button">
+                            <span aria-hidden="true">
+                                ×
+                            </span>
+                        </button>
+                        <strong>
+                            <span ng-bind="value">
+                            </span>
+                        </strong>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Tabel -->
+<table class="table">
+    <tr>
+        <th style="width: 20px;">
+            No
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Year
+        </th>
+        <th>
+            Color
+        </th>
+        <th>
+            Plate
+        </th>
+        <th style="text-align: center; width:150px; ">
+            Action
+        </th>
+    </tr>
+    <tr ng-repeat="(key, value) in CRUD.dataset">
+        <td ng-bind="$index+1">
+        </td>
+        <td ng-bind="value.brand">
+        </td>
+        <td ng-bind="value.type"></td>
+        <td ng-bind="value.year"></td>
+        <td ng-bind="value.color"></td>
+        <td>
+            <a href="javascript:void(0)" ng-bind="value.plate" uib-tooltip="Histories" ng-click="histories(value)"></a>
+        </td>
+        <td style="text-align: center">
+            <button class="btn btn-flat btn-info" ng-click="CRUD.select(value)">
+                <i class="glyphicon glyphicon-edit">
+                </i>
+            </button>
+            <button class="btn btn-flat btn-danger" ng-click="CRUD.delete(value)">
+                <i class="glyphicon glyphicon-trash">
+                </i>
+            </button>
+        </td>
+    </tr>
+</table>
