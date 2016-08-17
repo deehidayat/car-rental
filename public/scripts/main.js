@@ -103,7 +103,7 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
             });
         });
     }
-}]).controller('RentalsController', ['$scope', '$http', 'CRUDService', '$filter', function($scope, $http, CRUDService, $filter) {
+}]).controller('RentalsController', ['$scope', '$http', 'CRUDService', '$filter', '$uibModal', function($scope, $http, CRUDService, $filter, $uibModal) {
     $scope.CRUD = new CRUDService;
     $scope.CRUD.setBaseUrl('rentals');
     $scope.CRUD.getIndexes();
@@ -143,4 +143,34 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
     $scope.cars = new CRUDService;
     $scope.cars.setBaseUrl('cars');
     $scope.cars.getIndexes();
+    // Free
+    $scope.freeCars = function(record) {
+        $http.get('cars/free', {
+            params: {
+                date: $filter('date')($scope.date_from, 'dd-MM-yyyy')
+            }
+        }).then(function(response){
+            $uibModal.open({
+                controller: function($scope) {
+                    $scope.dataset = response.data.free_cars;
+                },
+                templateUrl: 'tpls/car-list.html'
+            });
+        });
+    }
+    // Rented
+    $scope.rentedCars = function(record) {
+        $http.get('cars/rented', {
+            params: {
+                date: $filter('date')($scope.date_from, 'dd-MM-yyyy')
+            }
+        }).then(function(response){
+            $uibModal.open({
+                controller: function($scope) {
+                    $scope.dataset = response.data.rented_cars;
+                },
+                templateUrl: 'tpls/car-list.html'
+            });
+        });
+    }
 }]);

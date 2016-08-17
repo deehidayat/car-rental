@@ -1,0 +1,24 @@
+<table class="table">
+    <tr>
+        <th style="width: 20px;">
+            No
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Plate
+        </th>
+    </tr>
+    <tr ng-repeat="(key, value) in dataset">
+        <td ng-bind="$index+1">
+        </td>
+        <td ng-bind="value.brand">
+        </td>
+        <td ng-bind="value.type"></td>
+        <td ng-bind="value.plate"></td>
+    </tr>
+</table>
