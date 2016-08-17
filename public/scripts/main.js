@@ -60,6 +60,7 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
     CRUDService.prototype.select = function(record) {
         this.data = angular.copy(record);
         this.error = null;
+        scrollTo(0, 0);
     }
     CRUDService.prototype.delete = function(record) {
         var self = this;
@@ -72,14 +73,36 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
     
     return CRUDService;
 }])
-.controller('ClientsController', ['$scope', '$http', 'CRUDService', function($scope, $http, CRUDService) {
+.controller('ClientsController', ['$scope', '$http', 'CRUDService', '$uibModal', function($scope, $http, CRUDService, $uibModal) {
     $scope.CRUD = new CRUDService;
     $scope.CRUD.setBaseUrl('clients');
     $scope.CRUD.getIndexes();
-}]).controller('CarsController', ['$scope', '$http', 'CRUDService', function($scope, $http, CRUDService) {
+    // Client Histories
+    $scope.histories = function(record) {
+        $http.get('histories/client/' + record.id).then(function(response){
+            $uibModal.open({
+                controller: function($scope) {
+                    $scope.data = response.data;
+                },
+                templateUrl: 'tpls/client-histories.html'
+            });
+        });
+    }
+}]).controller('CarsController', ['$scope', '$http', 'CRUDService', '$uibModal', function($scope, $http, CRUDService, $uibModal) {
     $scope.CRUD = new CRUDService;
     $scope.CRUD.setBaseUrl('cars');
     $scope.CRUD.getIndexes();
+    // Car Histories
+    $scope.histories = function(record) {
+        $http.get('histories/car/' + record.id).then(function(response){
+            $uibModal.open({
+                controller: function($scope) {
+                    $scope.data = response.data;
+                },
+                templateUrl: 'tpls/car-histories.html'
+            });
+        });
+    }
 }]).controller('RentalsController', ['$scope', '$http', 'CRUDService', '$filter', function($scope, $http, CRUDService, $filter) {
     $scope.CRUD = new CRUDService;
     $scope.CRUD.setBaseUrl('rentals');
@@ -97,6 +120,13 @@ var CarRental = angular.module('CarRental', ['ui.bootstrap', 'ui.router']).confi
         $scope.CRUD.error = null;
         $scope.date_from = new Date();
         $scope.date_to = new Date();
+    }
+    $scope.CRUD.select = function(record) {
+        $scope.date_from = new Date(record.date_from);
+        $scope.date_to = new Date(record.date_to);
+        this.data = angular.copy(record);
+        this.error = null;
+        scrollTo(0, 0);
     }
     $scope.$watch('date_from', function(val){
         $scope.CRUD.data.date_from = val ? $filter('date')(val, 'yyyy-MM-dd') : null;

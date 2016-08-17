@@ -90,10 +90,11 @@
         </td>
         <td ng-bind="value.brand">
         </td>
-        <td ng-bind="value.type">
-        <td ng-bind="value.year">
-        <td ng-bind="value.color">
-        <td ng-bind="value.plate">
+        <td ng-bind="value.type"></td>
+        <td ng-bind="value.year"></td>
+        <td ng-bind="value.color"></td>
+        <td>
+            <a href="javascript:void(0)" ng-bind="value.plate" uib-tooltip="Histories" ng-click="histories(value)"></a>
         </td>
         <td style="text-align: center">
             <button class="btn btn-flat btn-info" ng-click="CRUD.select(value)">

@@ -71,7 +71,8 @@
     <tr ng-repeat="(key, value) in CRUD.dataset">
         <td ng-bind="$index+1">
         </td>
-        <td ng-bind="value.name">
+        <td>
+            <a href="javascript:void(0)" ng-bind="value.name" uib-tooltip="Histories" ng-click="histories(value)"></a>
         </td>
         <td ng-bind="value.gender">
         </td>

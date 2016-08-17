@@ -1,0 +1,25 @@
+<!-- Tabel -->
+<table class="table">
+    <tr>
+        <th style="width: 20px;">
+            No
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Date
+        </th>
+    </tr>
+    <tr ng-repeat="(key, value) in data.histories">
+        <td ng-bind="$index+1">
+        </td>
+        <td ng-bind="value['rent-by']">
+        </td>
+        <td>
+          <span ng-bind="(value['date-from'] | date:'mediumDate')"></span>
+           to 
+          <span ng-bind="(value['date-to'] | date:'mediumDate')"></span>
+        </td>
+    </tr>
+</table>
