@@ -1,0 +1,505 @@
+FORMAT: 1A
+HOST: http://car-rental.dedehidayat.web.id/
+
+# Car Rental
+
+Pre-Interview coding test 
+
+## Clients Collection [/clients]
+
+### List All Clients [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 1,
+            "name": "Dede Hidayat",
+            "gender": "male"
+          },
+          {
+            "id": 2,
+            "name": "Cici cecey Mulyani",
+            "gender": "female"
+          },
+          {
+            "id": 3,
+            "name": "Livia Agisna Azzahra",
+            "gender": "female"
+          }
+        ]
+
+### Create a New Client [POST]
+
++ Request (application/json)
+
+        {
+          "name": "Dede Hidayat",
+          "gender": "male"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "name": [
+            "The name field is required."
+          ],
+          "gender": [
+            "The gender field is required."
+          ]
+        }
+            
+## Single Client [/clients/{id}]
++ Parameters
+    + id (number) - ID of Client
+    
+### Get Single Client [GET]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "Dede Hidayat",
+          "gender": "male"
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+
+### Update Single Client [PUT]
+
++ Request (application/json)
+
+        {
+          "name": "Dede Hidayat",
+          "gender": "male"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+### Delete Single Client [DELETE]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+
+
+## Cars Collection [/cars]
+
+### List All Cars [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 1,
+            "brand": "Honda",
+            "type": "Civic",
+            "year": 2016,
+            "color": "Black",
+            "plate": "D 12345 HND"
+          },
+          {
+            "id": 2,
+            "brand": "Honda",
+            "type": "Stream",
+            "year": 2007,
+            "color": "Silver",
+            "plate": "D 6789 HND"
+          }
+        ]
+
+### Create a New Car [POST]
+
++ Request (application/json)
+
+        {
+          "brand": "Honda",
+          "type": "Stream",
+          "year": "2007",
+          "color": "Silver",
+          "plate": "D 8888 XX"
+        }
+
++ Response 201 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "brand": [
+            "The brand field is required."
+          ],
+          "type": [
+            "The type field is required."
+          ],
+          "year": [
+            "The year field is required."
+          ],
+          "color": [
+            "The color field is required."
+          ],
+          "plate": [
+            "The plate field is required."
+          ]
+        }
+            
+## Single Car [/cars/{id}]
++ Parameters
+    + id (number) - ID of Car
+    
+### Get Single Car [GET]
+
++ Response 200 (application/json)
+
+        {
+          "id": 2,
+          "brand": "Honda",
+          "type": "Stream",
+          "year": 2007,
+          "color": "Silver",
+          "plate": "D 6789 HND"
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+
+### Update Single Car [PUT]
+
++ Request (application/json)
+
+        {
+          "brand": "Honda",
+          "type": "Stream",
+          "year": "2007",
+          "color": "Silver",
+          "plate": "D 8888 XX"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+### Delete Single Car [DELETE]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+
+
+## Rentals Collection [/rentals]
+
+### List All Rentals [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 21,
+            "client_id": 1,
+            "car_id": 1,
+            "date_from": "2016-08-25",
+            "date_to": "2016-08-25",
+            "name": "Dede Hidayat",
+            "brand": "Honda",
+            "type": "Civic",
+            "plate": "D 12345 HND"
+          }
+        ]
+
+### Create a New Rental [POST]
+
++ Request (application/json)
+
+        {
+          "date_from": "2016-08-27",
+          "date_to": "2016-08-29",
+          "client_id": 1,
+          "car_id": 2
+        }
+
++ Response 201 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "client_id": [
+            "The client id field is required."
+          ],
+          "car_id": [
+            "The car id field is required."
+          ]
+        }
+            
+## Single Rental [/rentals/{id}]
++ Parameters
+    + id (number) - ID of Rental
+    
+### Get Single Rental [GET]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "client_id": 1,
+          "car_id": 1,
+          "date_from": "2016-08-25",
+          "date_to": "2016-08-25",
+          "name": "Dede Hidayat",
+          "brand": "Honda",
+          "type": "Civic",
+          "plate": "D 12345 HND"
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+
+### Update Single Rental [PUT]
+
++ Request (application/json)
+
+        {
+          "date_from": "2016-08-27",
+          "date_to": "2016-08-29",
+          "client_id": 1,
+          "car_id": 2
+        }
+
++ Response 200 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+### Delete Single Rental [DELETE]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+
+
+## Client Histories [/histories/client/{id}]
++ Parameters
+    + id (number) - ID of Client
+
+### List Client Histories [GET]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "name": "Dede Hidayat",
+          "gender": "male",
+          "histories": [
+            {
+              "id": 21,
+              "client_id": 1,
+              "car_id": 1,
+              "date_from": "2016-08-25",
+              "date_to": "2016-08-25",
+              "name": "Dede Hidayat",
+              "brand": "Honda",
+              "type": "Civic",
+              "plate": "D 12345 HND"
+            },
+            {
+              "id": 25,
+              "client_id": 1,
+              "car_id": 2,
+              "date_from": "2016-08-27",
+              "date_to": "2016-08-29",
+              "name": "Dede Hidayat",
+              "brand": "Honda",
+              "type": "Stream",
+              "plate": "D 6789 HND"
+            }
+          ]
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+        
+
+## Car Histories [/histories/car/{id}?{month}]
++ Parameters
+    + id (number) - ID of Car
+    + month (string) - format MM-YYYY
+
+### List Car Histories [GET]
+
++ Response 200 (application/json)
+
+        {
+          "id": 1,
+          "brand": "Honda",
+          "type": "Civic",
+          "year": 2016,
+          "color": "Black",
+          "plate": "D 12345 HND",
+          "histories": [
+            {
+              "rent-by": "Dede Hidayat",
+              "date-from": "2016-08-25",
+              "date-to": "2016-08-25"
+            }
+          ]
+        }
+
++ Response 400 (application/json)
+
+        {
+          "id": 10,
+          "message": "Record not found"
+        }
+
+## Free Cars [/cars/free?{date}]
++ Parameters
+    + date (string) - format DD-MM-YYYY
+
+### List All Free Cars [GET]
+
++ Response 200 (application/json)
+
+        {
+          "date": "17-08-2016",
+          "free_cars": [
+            {
+              "id": 1,
+              "brand": "Honda",
+              "type": "Civic",
+              "plate": "D 12345 HND"
+            },
+            {
+              "id": 2,
+              "brand": "Honda",
+              "type": "Stream",
+              "plate": "D 6789 HND"
+            },
+            {
+              "id": 4,
+              "brand": "Daihatsu",
+              "type": "Xenia",
+              "plate": "D 98765 XXY"
+            }
+          ]
+        }
+
++ Response 400 (application/json)
+
+        {
+          "message": "Date required"
+        }
+
+## Rented Cars [/cars/rented?{date}]
++ Parameters
+    + date (string) - format DD-MM-YYYY
+
+### List All Rented Cars [GET]
+
++ Response 200 (application/json)
+
+        {
+          "date": "25-08-2016",
+          "rented_cars": [
+            {
+              "id": 1,
+              "brand": "Honda",
+              "type": "Civic",
+              "plate": "D 12345 HND",
+              "date_from": "2016-08-25",
+              "date_to": "2016-08-25"
+            }
+          ]
+        }
+
++ Response 400 (application/json)
+
+        {
+          "message": "Date required"
+        }
